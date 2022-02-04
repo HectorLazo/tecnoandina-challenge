@@ -32,6 +32,7 @@ services:
 
   mysql:
     image: mysql:8
+    platform: linux/amd64
     volumes:
       - mysqldata:/var/lib/mysql
     ports:
