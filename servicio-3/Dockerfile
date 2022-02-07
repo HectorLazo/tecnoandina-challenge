@@ -5,3 +5,6 @@ FROM python:3.9.10-alpine3.15
 WORKDIR /app
 
 COPY . .
+
+RUN pip3 install django==3.2
+RUN pip3 install djangorestframework==3.13.1

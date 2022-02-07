@@ -7,29 +7,27 @@ import json
 from datetime import datetime
 
 broker="mosquitto"
-
-#port
 port=1883
-#time to live
 timelive=60
-token="Dc9KtGhxqTRL-1H7AcnxECSmoOK-BmV_LZ2CA1v93kWb3Cm4s4U2rcVSzKvnIVViQkZ3nizaw1WYTLYYatA_Vw=="
 
-influx_client = InfluxDBClient(url='192.168.18.66:8086', token=token, org="tecnoandina")
+
+token="TokenPersonal"
+org = "tecnoandina"
 bucket="system"
+
+influx_client = InfluxDBClient(url='http://influx:8086', token="qJv_NJkPQIIuItUMxqEFqi1VCR_ntBR4YJfu8SYPdObaUB4oHzqVHx4Ghog4kO-R2nC2EgTy7ucJTPNPn_ISgg==", org=org)
+
 write_api = influx_client.write_api(write_options=SYNCHRONOUS)
 query_api = influx_client.query_api()
 
 
 def on_connect(client, userdata, flags, rc):
-  print("Connected with result code "+str(rc))
   client.subscribe("challenge/dispositivo/rx")
 
 def on_message(client, userdata, msg):
 
     tiempo = json.loads(msg.payload.decode())['time']
-   
-    p = Point("dispositivos").tag("version", json.loads(msg.payload.decode())['version']).field("tiempo",tiempo ).field("value", json.loads(msg.payload.decode())['value'])
-
+    p = Point("dispositivos").tag("version", json.loads(msg.payload.decode())['version']).field("value", json.loads(msg.payload.decode())['value']).time(datetime.strptime(tiempo, "%Y-%m-%d %H:%M:%S"))
     write_api.write(bucket=bucket, record=p)
 
     

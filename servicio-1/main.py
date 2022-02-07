@@ -19,7 +19,7 @@ def publicar():
 
 	value = random.uniform(0, 1000)
 	version = random.randint(1, 2)
-	current_time = now.strftime('%Y/%m/%d %H:%M:%S')
+	current_time = now.strftime('%Y-%m-%d %H:%M:%S')
 
 	msg = {
 	    "time": current_time,
